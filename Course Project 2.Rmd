@@ -17,6 +17,9 @@ knitr::opts_chunk$set(echo = TRUE)
 download.file("https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2",destfile = "repdata_data_StormData.csv.bz2")
 StormData = read.csv(bzfile("repdata_data_StormData.csv.bz2"))
 summary(StormData)
+dim(StormData)
+tail(StormData)
+head(StormData)
 ```
 ## Data Proccesing 
 2. Cleaning the data
