@@ -3,8 +3,9 @@ title: "Reproducible Research Course-2"
 author: "Maulid Hussein Bwabo"
 date: '2022-06-12'
 output:
-  pdf_document: default
+  word_document: default
   html_document: default
+  pdf_document: default
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -23,8 +24,17 @@ head(StormData)
 ```
 ## Data Proccesing 
 2. Cleaning the data
+The key constructs that are used for this analysis are
+*EVTYPE : Type of the event
+*FATALITIES : Number of fatalities out of the event
+*INJURIES : It try to figure out  injuries from the event
+*PROPDMG : It measured the number of property damage measured
+*CROPDMG : It measured the number crop damage 
+*PROPDMGEXP : It measured the Property damage exponent (Mns, Bns etc)
+*CROPDMGEXP : It measured the crop damage exponent (Mns, Bns etc)
+The cleaning data has been extended by assigning the numerical values to exponential power
 ```{Cleaning}
-StormData$PROPDMGEXP <- toupper(StormData$PROPDMGEXP)
+StormData$PROPDMGEXP<- toupper(StormData$PROPDMGEXP)
 StormData$PROPDMGEXP[StormData$PROPDMGEXP %in% c("", "+", "-", "?")] <- "0"
 StormData$PROPDMGEXP[StormData$PROPDMGEXP %in% c("B")] <- "9"
 StormData$PROPDMGEXP[StormData$PROPDMGEXP %in% c("M")] <- "6"
@@ -43,8 +53,8 @@ StormData$CROPDMGEXP[StormData$CROPDMGEXP %in% c("H")] <- "2"
 StormData$PROPDMGTOTAL <- StormData$PROPDMG * (10 ^ as.numeric(StormData$PROPDMGEXP))
 StormData$CROPDMGTOTAL <- StormData$CROPDMG * (10 ^ as.numeric(StormData$CROPDMGEXP))
 StormData$DMGTOTAL <- StormData$PROPDMGTOTAL + StormData$CROPDMGTOTAL
-##Analyzing the critical eventts 
-SummStormData <- StormData %>%
+##Analyzing the critical events 
+SummStormData<- StormData %>%
   group_by(EVTYPE) %>%
   summarize(SUMFATALITIES = sum(FATALITIES),
             SUMINJURIES = sum(INJURIES),
@@ -55,13 +65,16 @@ SummStormData <- StormData %>%
 
 ```{Head}
 head(SummStormData)
+tail(SummStormData)
 ```
 
 ##Analysis for critical events 
+Total fatalities, injuries and economic damage are summarized for each weather event
 1. Events with the Most Fatalities
 ```{Fatality}
 SummStormDataFatality <- arrange(SummStormData, desc(SUMFATALITIES))
 FatalityData <- head(SummStormDataFatality)
+summary(SummStormData)
 ```
 
 2. Events caused more injuries
